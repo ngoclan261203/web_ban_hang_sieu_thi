@@ -32,7 +32,7 @@ if(isset($_POST['update_product'])){
    $update_product = $conn->prepare("UPDATE `products` SET name = ?, category = ?, details = ?, price = ? WHERE id = ?");
    $update_product->execute([$name, $category, $details, $price, $pid]);
 
-   $message[] = 'product updated successfully!';
+   $message[] = 'Cập nhật thành công!';
 
    if(!empty($image)){
       if($image_size > 2000000){
@@ -62,11 +62,131 @@ if(isset($_POST['update_product'])){
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>update products</title>
 
-   <!-- font awesome cdn link  -->
+   <!-- font awesome cdn link   link cho icon trên header-->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
-   <!-- custom css file link  -->
    <link rel="stylesheet" href="css/admin_style.css">
+   <style>
+*{
+   font-family: 'Rubik', sans-serif;
+   margin:0; padding:0;
+   box-sizing: border-box;
+   outline: none; border:none;
+   text-decoration: none;
+   color:#333; /* Thay var(--black) bằng #333 */
+}
+
+*::selection{
+   background-color: #f55c7a; /* Thay var(--green) bằng #f55c7a */
+   color:#fff; /* Thay var(--white) bằng #fff */
+}
+
+*::-webkit-scrollbar{
+   height: .5rem;
+   width: 1rem;
+}
+
+*::-webkit-scrollbar-track{
+   background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb{
+   background-color: #f55c7a; /* Thay var(--green) bằng #f55c7a */
+}
+
+body{
+   background-color: #FAF0F6;
+}
+
+html{
+   font-size: 62.5%;
+   overflow-x: hidden;
+   scroll-behavior: smooth;
+   scroll-padding-top: 6.5rem;
+}
+
+section{
+   padding:3rem 2rem;
+   max-width: 1200px;
+   margin:0 auto;
+}
+
+.btn,
+.delete-btn,
+.option-btn{
+   display: block;
+   width: 100%;
+   margin-top: 1rem;
+   border-radius: .5rem;
+   color:#f2d479; /* Thay var(--light-btn) bằng #f2d479 */
+   font-size: 2rem;
+   padding:1.3rem 3rem;
+   text-transform: capitalize;
+   cursor: pointer;
+   text-align: center;
+}
+
+.delete-btn{
+   background-color: #c13346; /* Thay var(--red) bằng #c13346 */
+}
+
+.delete-btn:hover{
+   background-color: #333; /* Thay var(--black) bằng #333 */
+}
+
+.title{
+   text-align: center;
+   margin-bottom: 2rem;
+   text-transform: uppercase;
+   color:#f55c7a; /* Thay var(--green) bằng #f55c7a */
+   font-size: 3.5rem;
+}
+
+.update-product form{
+   max-width: 50rem;
+   padding:2rem;
+   margin:0 auto;
+   text-align: center;
+   border:.2rem solid #333; /* Thay var(--border) bằng .2rem solid #333 */
+   box-shadow: 0 .5rem 1rem rgba(0,0,0,.1); /* Thay var(--box-shadow) bằng giá trị này */
+   background-color: #fff; /* Thay var(--white) bằng #fff */
+   border-radius: .5rem;
+}
+
+.update-product form img{
+   height: 25rem;
+   object-fit: cover;
+   margin-bottom: 1rem;
+}
+
+.update-product form .box{
+   width: 100%;
+   border:.2rem solid #333; /* Thay var(--border) bằng .2rem solid #333 */
+   background-color: #f6f6f6; /* Thay var(--light-bg) bằng #f6f6f6 */
+   border-radius: .5rem;
+   padding:1.2rem 1.4rem;
+   font-size: 1.8rem;
+   color:#333; /* Thay var(--black) bằng #333 */
+   margin:1rem 0;
+}
+
+@media (max-width:450px){
+   .show-products .box-container{
+      grid-template-columns: 1fr;
+   }
+
+   .update-product form img{
+      height: auto;
+      width: 100%;
+   }
+
+   .placed-orders .box-container,
+   .user-accounts .box-container,
+   .messages .box-container{
+      grid-template-columns: 1fr;
+   }
+}
+</style>
+
 
 </head>
 <body>
@@ -75,7 +195,7 @@ if(isset($_POST['update_product'])){
 
 <section class="update-product">
 
-   <h1 class="title">update product</h1>   
+   <h1 class="title">Cập nhật sản phẩm</h1>   
 
    <?php
       $update_id = $_GET['update'];
@@ -92,22 +212,22 @@ if(isset($_POST['update_product'])){
       <input type="number" name="price" min="0" placeholder="enter product price" required class="box" value="<?= $fetch_products['price']; ?>">
       <select name="category" class="box" required>
          <option selected><?= $fetch_products['category']; ?></option>
-         <option value="vegitables">vegitables</option>
-         <option value="fruits">fruits</option>
-         <option value="meat">meat</option>
-         <option value="fish">fish</option>
+         <option value="vegitables">Rau</option>
+         <option value="fruits">Hoa quả</option>
+         <option value="meat">Thịt</option>
+         <option value="fish">Cá</option>
       </select>
-      <textarea name="details" required placeholder="enter product details" class="box" cols="30" rows="10"><?= $fetch_products['details']; ?></textarea>
+      <textarea name="details" required placeholder="Nhập chi tiết sản phẩm" class="box" cols="30" rows="10"><?= $fetch_products['details']; ?></textarea>
       <input type="file" name="image" class="box" accept="image/jpg, image/jpeg, image/png">
       <div class="flex-btn">
-         <input type="submit" class="btn" value="update product" name="update_product">
-         <a href="admin_products.php" class="option-btn">go back</a>
+         <input type="submit" class="btn" value="Cập nhật" name="update_product">
+         <a href="admin_products.php" class="option-btn">Trở lại</a>
       </div>
    </form>
    <?php
          }
       }else{
-         echo '<p class="empty">no products found!</p>';
+         echo '<p class="empty">Không tìm thấy sản phẩm!</p>';
       }
    ?>
 

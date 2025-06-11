@@ -17,14 +17,14 @@ if(isset($message)){
 
    <div class="flex">
 
-      <a href="home.php" class="logo">D3Market</a>
+      <a href="home.php" class="logo">OnlineMarket</a>
 
       <nav class="navbar">
-         <a href="home.php">home</a>
-         <a href="shop.php">shop</a>
-         <a href="orders.php">orders</a>
-         <a href="about.php">about</a>
-         <a href="contact.php">contact</a>
+         <a href="home.php" >Home</a>
+         <a href="shop.php">Shop</a>
+         <a href="orders.php">Orders</a>
+         <a href="about.php">About</a>
+         <a href="contact.php">Contact</a>
       </nav>
 
       <div class="icons">
@@ -60,3 +60,109 @@ if(isset($message)){
    </div>
 
 </header>
+<!DOCTYPE html>
+<html lang="en">
+   <style>
+      .logo { font-weight: bold; } 
+      .navbar a { font-weight: bold; }
+      .header{
+         background: var(--light-color);
+         position: sticky;
+         top:0; left:0; right:0;
+         z-index: 1000;
+         box-shadow: var(--box-shadow);
+      }
+
+      .header .flex{
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         padding:2rem;
+         margin: 0 auto;
+         max-width: 1200px;
+         position: relative;
+      }
+
+      .header .flex .logo{
+         font-size: 2.5rem;
+         color:var(--green);
+      }
+
+      .header .flex .logo span{
+         color:var(--green);
+      }
+
+      .header .flex .navbar a{
+         margin:0 1rem;
+         font-size: 2rem;
+         color:var(--red);
+      }
+
+      .header .flex .navbar a:hover{
+         text-decoration: underline;
+         color:var(--green);
+      }
+
+      .header .flex .icons > *{
+         font-size: 2.5rem;
+         color:var(--red);
+         cursor: pointer;
+         margin-left: 1.5rem;
+      }
+
+      .header .flex .icons > *:hover{
+         color:var(--green);
+      }
+
+      .header .flex .icons a span,
+      .header .flex .icons a i{
+         color:var(--red);
+      }
+
+      .header .flex .icons a:hover span,
+      .header .flex .icons a:hover i{
+         color:var(--green);
+      }
+
+      .header .flex .icons a span{
+         font-size: 2rem;
+      }
+
+      #menu-btn{
+         display: none;
+      }
+
+      .header .flex .profile{
+         position: absolute;
+         top:120%; right:2rem;
+         box-shadow: var(--box-shadow);
+         border:var(--border);
+         border-radius: .5rem;
+         padding:2rem;
+         text-align: center;
+         background-color: var(--white);
+         width: 33rem;
+         display: none;
+         animation: fadeIn .2s linear;
+      }
+
+      .header .flex .profile.active{
+         display: inline-block;
+      }
+
+      .header .flex .profile img{
+         height: 15rem;
+         width: 15rem;
+         margin-bottom: 1rem;
+         border-radius: 50%;
+         object-fit: cover;
+      }
+
+      .header .flex .profile p{
+         padding:.5rem 0;
+         font-size: 2rem;
+         color:var(--light-color);
+      }  
+   </style>
+</body>
+</html>

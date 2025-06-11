@@ -23,8 +23,8 @@ if(isset($_POST['order'])){
    $method = $_POST['method'];
    $method = filter_var($method, FILTER_SANITIZE_STRING);
    date_default_timezone_set('Asia/Ho_Chi_Minh');
-   $placed_on = date('d/m/Y');
-
+   // $placed_on = date('d/m/Y');
+   $placed_on = date("Y-m-d");
    $cart_total = 0;
    $cart_products = '';
 
@@ -73,7 +73,71 @@ if(isset($_POST['order'])){
 
    <!-- custom css file link  -->
    <link rel="stylesheet" href="css/style.css">
+      <style>
+         :root{
+         --green:#27ae60;
+       
+         --red:#e74c3c;
+       
+         --black:hsl(300, 5%, 8%);
+         --light-color:#f4dddd;
+         --white:#fff;
 
+         --border:.2rem solid var(--black);
+         --box-shadow:0 .5rem 1rem rgba(0,0,0,.1);
+         
+         }
+         *::selection{
+      background-color: var(--green);
+      color:var(--white);
+         }
+
+   .btn{
+      background-color: var(--red);
+   }
+
+   .delete-btn{
+      background-color: var(--red);
+   }
+
+
+
+   .btn:hover{
+      background-color: var(--green);
+   }
+
+   .flex-btn{
+      display: flex;
+      flex-wrap: wrap;
+      gap:1rem;
+   }
+
+   .flex-btn > *{
+      flex:1;
+   }
+   *::-webkit-scrollbar{
+      height: .5rem;
+      width: 1rem;
+   }
+   .title{
+      text-align: center;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      color:var(--red);
+      font-size: 3.5rem;
+   }
+   *::-webkit-scrollbar-track{
+      background-color: transparent;
+   }
+
+   *::-webkit-scrollbar-thumb{
+      background-color: var(--red);
+   }
+
+   body{
+      background-color: var(--light-color) ;
+   }
+   
 </head>
 <body>
    
@@ -90,53 +154,54 @@ if(isset($_POST['order'])){
             $cart_total_price = ($fetch_cart_items['price'] * $fetch_cart_items['quantity']);
             $cart_grand_total += $cart_total_price;
    ?>
-   <p> <?= $fetch_cart_items['name']; ?> <span>(<?= '$'.$fetch_cart_items['price'].'/- x '. $fetch_cart_items['quantity']; ?>)</span> </p>
+  <p>Sản phẩm: <?= $fetch_cart_items['name']; ?> <span>(<?= $fetch_cart_items['price'] . ' VND x ' . $fetch_cart_items['quantity']; ?>)</span> </p>
+
    <?php
     }
    }else{
-      echo '<p class="empty">your cart is empty!</p>';
+      echo '<p class="empty">Giỏ hàng trống</p>';
    }
    ?>
-   <div class="grand-total">grand total : <span>$<?= $cart_grand_total; ?>/-</span></div>
+   <div class="grand-total"  style="color:red">Tổng thanh toán : <span><?= $cart_grand_total; ?> VND</span></div>
 </section>
 
 <section class="checkout-orders">
 
    <form action="" method="POST">
 
-      <h3>place your order</h3>
+      <h3>Đặt hàng</h3>
 
       <div class="flex">
          <div class="inputBox">
-            <span>Name :</span>
-            <input type="text" name="name" placeholder="enter your name" class="box" required>
+            <span>Tên của bạn :</span>
+            <input type="text" name="name" placeholder="Nhập tên của bạn" class="box" required>
          </div>
          <div class="inputBox">
-            <span>Phone number :</span>
-            <input type="number" name="number" placeholder="enter your phone number" class="box" required>
+            <span>SĐT:</span>
+            <input type="number" name="number" placeholder="Nhập số điện thoại" class="box" required>
          </div>
          <div class="inputBox">
             <span>Email :</span>
-            <input type="email" name="email" placeholder="enter your email" class="box" required>
+            <input type="email" name="email" placeholder="Nhập email" class="box" required>
          </div>
          <div class="inputBox">
-            <span>Payment method :</span>
+            <span>Phương thức thanh toán :</span>
             <select name="method" class="box" required>
-               <option value="cash on delivery">By cash (when receiving the products)</option>
-               <option value="credit card">By credit card</option>
+               <option value="cash on delivery">Tiền mặt (khi nhận hàng)</option>
+               <option value="credit card">Thẻ tín dụng</option>
             </select>
          </div>
          <div class="inputBox">
-            <span>Address :</span>
+            <span>Địa chỉ nhận hàng :</span>
             <input type="text" name="address" placeholder="enter your full address" class="box" required>
          </div>
          <div class="inputBox">
-            <span>PIN code :</span>
+            <span>Mã Pin :</span>
             <input type="number" min="0" name="pin_code" placeholder="e.g. 123456" class="box" required>
          </div>
       </div>
 
-      <input type="submit" name="order" class="btn <?= ($cart_grand_total > 0)?'':'disabled'; ?>" value="place order">
+      <input type="submit" name="order" class="btn <?= ($cart_grand_total > 0)?'':'disabled'; ?>" value="Đặt hàng ngay">
 
    </form>
 

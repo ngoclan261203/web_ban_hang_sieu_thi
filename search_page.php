@@ -83,12 +83,93 @@ if(isset($_POST['add_to_cart'])){
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>search page</title>
-
-   <!-- font awesome cdn link  -->
+   <link rel="stylesheet" href="css/style.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
-   <!-- custom css file link  -->
-   <link rel="stylesheet" href="css/style.css">
+   <style>
+      :root{
+      --green:#27ae60;
+      --orange:#f39c12;
+      --red:#e74c3c;
+      --pink:#e4b3da;
+      --black:hsl(300, 5%, 8%);
+      --light-color:#f4dddd;
+      --white:#fff;
+      --light-bg:#f6f6f6;
+      --border:.2rem solid var(--black);
+      --box-shadow:0 .5rem 1rem rgba(0,0,0,.1);
+      --purple:#800080;
+      }
+      *::selection{
+   background-color: var(--green);
+   color:var(--white);
+}
+.btn,
+.delete-btn,
+.option-btn{
+   display: block;
+   width: 100%;
+   margin-top: 1rem;
+   border-radius: .5rem;
+   color:var(--white);
+   font-size: 2rem;
+   padding:1.3rem 3rem;
+   text-transform: capitalize;
+   cursor: pointer;
+   
+   
+
+   text-align: center;
+}
+
+.btn{
+   background-color: var(--red);
+}
+
+.delete-btn{
+   background-color: var(--red);
+}
+
+
+
+.btn:hover,
+.delete-btn:hover,
+.option-btn:hover{
+   background-color: var(--green);
+}
+
+.flex-btn{
+   display: flex;
+   flex-wrap: wrap;
+   gap:1rem;
+}
+
+.flex-btn > *{
+   flex:1;
+}
+*::-webkit-scrollbar{
+   height: .5rem;
+   width: 1rem;
+}
+.title{
+   text-align: center;
+   margin-bottom: 2rem;
+   text-transform: uppercase;
+   color:var(--red);
+   font-size: 3.5rem;
+}
+*::-webkit-scrollbar-track{
+   background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb{
+   background-color: var(--red);
+}
+
+body{
+   background-color: var(--light-color) ;
+}
+   </style>
 
 </head>
 <body>
@@ -98,8 +179,8 @@ if(isset($_POST['add_to_cart'])){
 <section class="search-form">
 
    <form action="" method="POST">
-      <input type="text" class="box" name="search_box" placeholder="search products...">
-      <input type="submit" name="search_btn" value="search" class="btn">
+      <input type="text" class="box" name="search_box" placeholder="Nhập tên sản phẩm bạn muốn tìm...">
+      <input type="submit" name="search_btn" value="Tìm kiếm" class="btn">
    </form>
 
 </section>
@@ -115,43 +196,57 @@ if(isset($_POST['add_to_cart'])){
    <div class="box-container">
 
    <?php
-      if(isset($_POST['search_btn'])){
-      $search_box = $_POST['search_box'];
-      $search_box = filter_var($search_box, FILTER_SANITIZE_STRING);
-      $select_products = $conn->prepare("SELECT * FROM `products` WHERE name LIKE '%{$search_box}%' OR category LIKE '%{$search_box}%'");
-      $select_products->execute();
-      if($select_products->rowCount() > 0){
-         while($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)){ 
-   ?>
-   <form action="" class="box" method="POST">
-      <div class="price">$<span><?= $fetch_products['price']; ?></span>/-</div>
-      <a href="view_page.php?pid=<?= $fetch_products['id']; ?>" class="fas fa-eye"></a>
-      <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
-      <div class="name"><?= $fetch_products['name']; ?></div>
-      <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
-      <input type="hidden" name="p_name" value="<?= $fetch_products['name']; ?>">
-      <input type="hidden" name="p_price" value="<?= $fetch_products['price']; ?>">
-      <input type="hidden" name="p_image" value="<?= $fetch_products['image']; ?>">
-      <input type="number" min="1" value="1" name="p_qty" class="qty">
-      <input type="submit" value="add to wishlist" class="option-btn" name="add_to_wishlist">
-      <input type="submit" value="add to cart" class="btn" name="add_to_cart">
-   </form>
-   <?php
-         }
-      }else{
-         echo '<p class="empty">no result found!</p>';
-      }
-      
-   };
-   ?>
+if (isset($_POST['search_btn'])) {
+   $search_box = $_POST['search_box'];
+   $search_box = filter_var($search_box, FILTER_SANITIZE_STRING);
 
-   </div>
+   if (empty($search_box)) {
+       echo '<p class="empty">Hãy nhập sản phẩm để tìm!</p>';
+   } else {
+       // Tìm sản phẩm gần giống
+       $search_term = "%{$search_box}%";
+       $select_products = $conn->prepare("
+           SELECT * 
+           FROM `products` 
+           WHERE name LIKE ? OR category LIKE ? 
+           ORDER BY 
+               CASE 
+                   WHEN name LIKE ? THEN 1 
+                   WHEN category LIKE ? THEN 2 
+                   ELSE 3 
+               END
+       ");
+       $select_products->execute([$search_term, $search_term, $search_term, $search_term]);
+
+       if ($select_products->rowCount() > 0) {
+           while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
+               ?>
+               <form action="" class="box" method="POST">
+                   <div class="price"><span><?= $fetch_products['price']; ?></span> VND</div>
+                   <a href="view_page.php?pid=<?= $fetch_products['id']; ?>" class="fas fa-eye"></a>
+                   <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
+                   <div class="name"><?= $fetch_products['name']; ?></div>
+                   <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
+                   <input type="hidden" name="p_name" value="<?= $fetch_products['name']; ?>">
+                   <input type="hidden" name="p_price" value="<?= $fetch_products['price']; ?>">
+                   <input type="hidden" name="p_image" value="<?= $fetch_products['image']; ?>">
+                   <input type="number" min="1" value="1" name="p_qty" class="qty">
+                   <input type="submit" value="Thêm vào yêu thích" class="option-btn" name="add_to_wishlist">
+                   <input type="submit" value="Thêm vào giỏ hàng" class="btn" name="add_to_cart">
+               </form>
+               <?php
+           }
+       } else {
+           echo '<p class="empty">Không tìm thấy sản phẩm nào phù hợp. Hãy tìm từ khóa khác!
+           </p>';
+       }
+   }
+}
+
+?>
+ </div>
 
 </section>
-
-
-
-
 
 
 <?php include 'footer.php'; ?>

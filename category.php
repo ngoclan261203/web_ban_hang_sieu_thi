@@ -62,10 +62,10 @@ if(isset($_POST['add_to_cart'])){
       $check_wishlist_numbers = $conn->prepare("SELECT * FROM `wishlist` WHERE name = ? AND user_id = ?");
       $check_wishlist_numbers->execute([$p_name, $user_id]);
 
-      if($check_wishlist_numbers->rowCount() > 0){
-         $delete_wishlist = $conn->prepare("DELETE FROM `wishlist` WHERE name = ? AND user_id = ?");
-         $delete_wishlist->execute([$p_name, $user_id]);
-      }
+      // if($check_wishlist_numbers->rowCount() > 0){
+      //    $delete_wishlist = $conn->prepare("DELETE FROM `wishlist` WHERE name = ? AND user_id = ?");
+      //    $delete_wishlist->execute([$p_name, $user_id]);
+      // }
 
       $insert_cart = $conn->prepare("INSERT INTO `cart`(user_id, pid, name, price, quantity, image) VALUES(?,?,?,?,?,?)");
       $insert_cart->execute([$user_id, $pid, $p_name, $p_price, $p_qty, $p_image]);
@@ -89,7 +89,100 @@ if(isset($_POST['add_to_cart'])){
 
    <!-- custom css file link  -->
    <link rel="stylesheet" href="css/style.css">
+   <style>
+      :root{
+      --green:#27ae60;
+      --orange:#f39c12;
+      --red:#e74c3c;
+      --pink:#e4b3da;
+      --black:hsl(300, 5%, 8%);
+      --light-color:#f4dddd;
+      --white:#fff;
+      --light-bg:#f6f6f6;
+      --border:.2rem solid var(--black);
+      --box-shadow:0 .5rem 1rem rgba(0,0,0,.1);
+      --purple:#800080;
+      }
+      *::selection{
+   background-color: var(--green);
+   color:var(--white);
+}
+.btn,
+.delete-btn,
+.option-btn{
+   display: block;
+   width: 100%;
+   margin-top: 1rem;
+   border-radius: .5rem;
+   color:var(--white);
+   font-size: 2rem;
+   padding:1.3rem 3rem;
+   text-transform: capitalize;
+   cursor: pointer;
+   
+   
 
+   text-align: center;
+}
+
+.btn{
+   background-color: var(--red);
+}
+
+.delete-btn{
+   background-color: var(--red);
+}
+
+
+
+.btn:hover,
+.delete-btn:hover,
+.option-btn:hover{
+   background-color: var(--green);
+}
+
+.flex-btn{
+   display: flex;
+   flex-wrap: wrap;
+   gap:1rem;
+}
+
+.flex-btn > *{
+   flex:1;
+}
+*::-webkit-scrollbar{
+   height: .5rem;
+   width: 1rem;
+}
+.title{
+   text-align: center;
+   margin-bottom: 2rem;
+   text-transform: uppercase;
+   color:var(--red);
+   font-size: 3.5rem;
+}
+*::-webkit-scrollbar-track{
+   background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb{
+   background-color: var(--red);
+}
+
+body{
+   background-color: var(--light-color) ;
+}
+.products .box-container .box .qty{
+   text-align: center;
+   margin:.5rem 0;
+   border-radius: .5rem;
+   padding:1.2rem 1.4rem;
+   font-size: 1.8rem;
+   color:var(--black);
+   border:var(--border);
+   width: 100%;
+}
+   </style>
 </head>
 <body>
    
@@ -97,7 +190,7 @@ if(isset($_POST['add_to_cart'])){
 
 <section class="products">
 
-   <h1 class="title">products categories</h1>
+   <h1 class="title">Danh mục sản phẩm</h1>
 
    <div class="box-container">
 
@@ -109,7 +202,7 @@ if(isset($_POST['add_to_cart'])){
          while($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)){ 
    ?>
    <form action="" class="box" method="POST">
-      <div class="price">$<span><?= $fetch_products['price']; ?></span>/-</div>
+      <div class="price"><span><?= $fetch_products['price']; ?></span>VND</div>
       <a href="view_page.php?pid=<?= $fetch_products['id']; ?>" class="fas fa-eye"></a>
       <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
       <div class="name"><?= $fetch_products['name']; ?></div>
@@ -118,8 +211,8 @@ if(isset($_POST['add_to_cart'])){
       <input type="hidden" name="p_price" value="<?= $fetch_products['price']; ?>">
       <input type="hidden" name="p_image" value="<?= $fetch_products['image']; ?>">
       <input type="number" min="1" value="1" name="p_qty" class="qty">
-      <input type="submit" value="add to wishlist" class="option-btn" name="add_to_wishlist">
-      <input type="submit" value="add to cart" class="btn" name="add_to_cart">
+      <input type="submit" value="Thêm vào yêu thích" class="option-btn" name="add_to_wishlist">
+      <input type="submit" value="Thêm vào giỏ hàng" class="btn" name="add_to_cart">
    </form>
    <?php
          }

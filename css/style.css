@@ -19,13 +19,17 @@
 .home-bg .home .content span{
    color:var(--orange);
    font-size: 2.5rem;
+   text-align: center;
+   display: block;
 }
 
 .home-bg .home .content h3{
    font-size: 3rem;
    text-transform: uppercase;
    margin-top: 1.5rem;
-   color: var(--red);
+   text-align: center;
+   display: block;
+   color: var(--black);
 }
 
 .home-bg .home .content p{
@@ -206,7 +210,7 @@
    padding:1rem 0;
    line-height: 2;
    font-size: 1.5rem;
-   color:var(--light-color);
+   color:var(--pink);
 }
 
 .p-category{

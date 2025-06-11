@@ -75,9 +75,95 @@ if(isset($_GET['delete_all'])){
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
-   <!-- custom css file link  -->
+   
    <link rel="stylesheet" href="css/style.css">
 
+   <style>
+      :root{
+      --green:#27ae60;
+      --orange:#f39c12;
+      --red:#e74c3c;
+      --pink:#e4b3da;
+      --black:hsl(300, 5%, 8%);
+      --light-color:#f4dddd;
+      --white:#fff;
+      --light-bg:#f6f6f6;
+      --border:.2rem solid var(--black);
+      --box-shadow:0 .5rem 1rem rgba(0,0,0,.1);
+      --purple:#800080;
+      }
+      *::selection{
+   background-color: var(--green);
+   color:var(--white);
+}
+.btn,
+.delete-btn,
+.option-btn{
+   display: block;
+   width: 100%;
+   margin-top: 1rem;
+   border-radius: .5rem;
+   color:var(--white);
+   font-size: 2rem;
+   padding:1.3rem 3rem;
+   text-transform: capitalize;
+   cursor: pointer;
+   
+   
+
+   text-align: center;
+}
+
+.btn{
+   background-color: var(--red);
+}
+
+.delete-btn{
+   background-color: var(--red);
+}
+
+
+
+.btn:hover,
+.delete-btn:hover,
+.option-btn:hover{
+   background-color: var(--green);
+}
+
+.flex-btn{
+   display: flex;
+   flex-wrap: wrap;
+   gap:1rem;
+}
+
+.flex-btn > *{
+   flex:1;
+}
+*::-webkit-scrollbar{
+   height: .5rem;
+   width: 1rem;
+}
+.title{
+   text-align: center;
+   margin-bottom: 2rem;
+   text-transform: uppercase;
+   color:var(--red);
+   font-size: 3.5rem;
+}
+*::-webkit-scrollbar-track{
+   background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb{
+   background-color: var(--red);
+}
+
+body{
+   background-color: var(--light-color) ;
+}
+
+   </style>
+   
 </head>
 <body>
    
@@ -85,7 +171,7 @@ if(isset($_GET['delete_all'])){
 
 <section class="wishlist">
 
-   <h1 class="title">products added</h1>
+   <h1 class="title">Sản phẩm đã thêm</h1>
 
    <div class="box-container">
 
@@ -101,27 +187,27 @@ if(isset($_GET['delete_all'])){
       <a href="view_page.php?pid=<?= $fetch_wishlist['pid']; ?>" class="fas fa-eye"></a>
       <img src="uploaded_img/<?= $fetch_wishlist['image']; ?>" alt="">
       <div class="name"><?= $fetch_wishlist['name']; ?></div>
-      <div class="price">$<?= $fetch_wishlist['price']; ?>/-</div>
+      <div class="price"><?= $fetch_wishlist['price']; ?> VND</div>
       <input type="number" min="1" value="1" class="qty" name="p_qty">
       <input type="hidden" name="pid" value="<?= $fetch_wishlist['pid']; ?>">
       <input type="hidden" name="p_name" value="<?= $fetch_wishlist['name']; ?>">
       <input type="hidden" name="p_price" value="<?= $fetch_wishlist['price']; ?>">
       <input type="hidden" name="p_image" value="<?= $fetch_wishlist['image']; ?>">
-      <input type="submit" value="add to cart" name="add_to_cart" class="btn">
+      <input type="submit" value="Thêm vào giỏ hàng" name="add_to_cart" class="btn">
    </form>
    <?php
       $grand_total += $fetch_wishlist['price'];
       }
    }else{
-      echo '<p class="empty">your wishlist is empty</p>';
+      echo '<p class="empty">Danh sách yêu thích trống</p>';
    }
    ?>
    </div>
 
    <div class="wishlist-total">
-      <p>grand total : <span>$<?= $grand_total; ?>/-</span></p>
-      <a href="shop.php" class="option-btn">continue shopping</a>
-      <a href="wishlist.php?delete_all" class="delete-btn <?= ($grand_total > 1)?'':'disabled'; ?>">delete all</a>
+      <p>Tổng toàn bộ : <span><?= $grand_total; ?>VND</span></p>
+      <a href="shop.php" class="option-btn">Tiếp tục mua</a>
+      <a href="wishlist.php?delete_all" class="delete-btn <?= ($grand_total > 1)?'':'disabled'; ?>">Xóa tất cả</a>
    </div>
 
 </section>
